@@ -30,17 +30,34 @@
 #define OUT_Y_H           0x2B
 #define OUT_Z_H           0x2D
 
+
+// Temperature settings:
+#define TEMP_ENABLED      0x11
+#define TEMP_DISABLED     0x00
+
+// ODR Settings;
+#define POWER_DOWN        0x00
+#define ODR_1HZ           0x01
+#define ODR_10HZ          0x02
+#define ODR_25HZ          0x03
+#define ODR_50HZ          0x04
+#define ODR_100HZ         0x05
+#define ODR_200HZ         0x06
+#define ODR_400HZ         0x07
+#define ODR_1620HZ        0x08
+#define ODR_5376HZ        0x09
+
 class Lis2de
 {
   public:    
+    Lis2de(int SS_pin);   // Constructor
   
-    uint8_t _SS_pin;
-  
-    struct SensorSettings {
+    // Structure to hold all the device's settings
+    struct sensorSettings {
 				uint8_t TEMP_ENABLE = 0x00;
 				//CTRL1
 				uint8_t ODR = 0x00;
-				uint8_t LPEN= 0x00;
+				uint8_t LPEN= 0x01;
 				uint8_t ZEN = 0x01;
 				uint8_t YEN = 0x01;
 				uint8_t XEN = 0x01;
@@ -49,14 +66,13 @@ class Lis2de
 				uint8_t HPCF = 0x00;
 				uint8_t FDS = 0x00;
 				uint8_t HPCLICK = 0x00;
-				uint8_t HPIS2 = 0x00;
-				uint8_t HPIS1 = 0x00;
+				uint8_t HPIA2 = 0x00;
+				uint8_t HPIA1 = 0x00;
 				//CTRL3
 				uint8_t INT1_CLICK = 0x00;
-				uint8_t INT1_IG1 = 0x00;
-				uint8_t INT1_IG2 = 0x00;
-				uint8_t INT1_DRDY1 = 0x00;
-				uint8_t INT1_DRDY2 = 0x00;
+				uint8_t INT1_IA1 = 0x00;
+				uint8_t INT1_IA2 = 0x00;
+				uint8_t INT1_ZYXDA = 0x00;
 				uint8_t INT1_WTM = 0x00;
 				uint8_t INT1_OVERRUN = 0x00;
 				//CTRL4
@@ -67,24 +83,30 @@ class Lis2de
 				//CTRL5
 				uint8_t BOOT = 0x00;
 				uint8_t FIFO_EN = 0x00;
-				uint8_t LIR_IG1 = 0x00;
-				uint8_t D4D_IG1 = 0x00;
-				uint8_t LIR_IG2 = 0x00;
-				uint8_t D4D_IG2 = 0x00;
+				uint8_t LIR_INT1 = 0x00;
+				uint8_t D4D_INT1 = 0x00;
+				uint8_t LIR_INT2 = 0x00;
+				uint8_t D4D_INT2 = 0x00;
 				//CTRL6
 				uint8_t INT2_CLICK = 0x00;
-				uint8_t INT2_IG1 = 0x00;
-				uint8_t INT2_IG2 = 0x00;
+				uint8_t INT2_IA1 = 0x00;
+				uint8_t INT2_IA2 = 0x00;
 				uint8_t INT2_BOOT = 0x00;
 				uint8_t INT2_ACT = 0x00;
-				uint8_t H_LACTIVE = 0x00;
-		};
+				uint8_t INT_POLARITY = 0x00;
+		} settings;
     
-    Lis2de(int SS_pin);   // Constructor
-    void write_byte(uint8_t addr, uint8_t subAddress, uint8_t data);
-    void begin(void);  
+    void begin(void);
+    void writeByte(uint8_t addr, uint8_t data);    
+    uint8_t readByte(uint8_t addr);
+    int8_t readOUT_X();
+    int8_t readOUT_Y();
+    int8_t readOUT_Z();
     
-}
+  private:
+    uint8_t _SS_pin;
+    
+};
 
 
 #endif
