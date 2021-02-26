@@ -28,6 +28,7 @@ void Lis2de::begin(void)
 {
   uint8_t s;                  // Variable used to form each setting byte
   pinMode(_SS_pin, OUTPUT);
+  digitalWrite(_SS_pin, HIGH);
   SPI.begin();
   
   // TEMP_CFG_REG
